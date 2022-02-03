@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image : mongo
+    container_name: mongodb
+    volumes:
+      - ./database:/data/db
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$DB_USER
+      - MONGO_INITDB_ROOT_PASSWORD=$DB_PASSWORD
+  
+  server:
+    depends_on:
+      - mongodb
+    build: .
+    container_name: graphql-server
+    ports:
+      - 4000:4000
+    env_file:
+      - ./.env
+    environment:
+      - DB_HOST=mongodb

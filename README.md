@@ -51,3 +51,34 @@
 
     ```
 - Adicionar o script `"test": "jest"` no `package.json`
+
+## Production
+
+- Run `docker-compose up`
+
+## Development
+
+- Crie um container mongodb com a seguinte configuração no seu docker-compose:
+```
+version: "3.8"
+
+services:
+  mongodb:
+    image : mongo
+    container_name: mongodb-local
+    volumes:
+      - ./database:/data/db
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+```
+- run `npm run start:dev`
+
+## Tests
+
+- Crie o mesmo container que para Dev.
+- Run `npm run start:test`
+- Em outra terminal run `npm test`
